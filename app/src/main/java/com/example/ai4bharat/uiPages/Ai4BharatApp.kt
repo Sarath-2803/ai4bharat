@@ -84,15 +84,16 @@ fun Ai4BharatApp(dao: SchemeDao?) {
                     )
                 }
 
-                3 -> Text(
-                    text = when (selectedLanguage) {
-                        Language.EN -> "Categories Screen"
-                        Language.HI -> "श्रेणियाँ स्क्रीन"
-                        Language.ML -> "വിഭാഗങ്ങൾ സ്ക്രീൻ"
-                        Language.TA -> "வகைகள் திரை"
-                    },
-                    modifier = Modifier.padding(16.dp)
-                )
+                3 -> TranslateScreen()
+//                Text(
+//                    text = when (selectedLanguage) {
+//                        Language.EN -> "Categories Screen"
+//                        Language.HI -> "श्रेणियाँ स्क्रीन"
+//                        Language.ML -> "വിഭാഗങ്ങൾ സ്ക്രീൻ"
+//                        Language.TA -> "வகைகள் திரை"
+//                    },
+//                    modifier = Modifier.padding(16.dp)
+//                )
 
                 4 -> Text(
                     text = when (selectedLanguage) {
