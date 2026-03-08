@@ -23,27 +23,58 @@ fun Ai4BharatApp(dao: SchemeDao?) {
     val languageOptions = Language.values().toList()
     val tabs = listOf("Home", "Schemes", "AI", "Translate", "Emergency")
 
+    // 🔹 State selection for Home screen
+    var selectedState by remember { mutableStateOf("Kerala") }
+    var stateDropdownExpanded by remember { mutableStateOf(false) }
+    val states = listOf("Kerala", "TN", "Maharashtra", "Karnataka", "All") // Add more states as needed
+
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("AI4Bharat") },
                 actions = {
-                    Box {
-                        TextButton(onClick = { languageDropdownExpanded = true }) {
-                            Text(selectedLanguage.name)
+                    Row {
+                        // Language dropdown
+                        Box {
+                            TextButton(onClick = { languageDropdownExpanded = true }) {
+                                Text(selectedLanguage.name)
+                            }
+                            DropdownMenu(
+                                expanded = languageDropdownExpanded,
+                                onDismissRequest = { languageDropdownExpanded = false }
+                            ) {
+                                languageOptions.forEach { lang ->
+                                    DropdownMenuItem(
+                                        text = { Text(lang.name) },
+                                        onClick = {
+                                            selectedLanguage = lang
+                                            languageDropdownExpanded = false
+                                        }
+                                    )
+                                }
+                            }
                         }
-                        DropdownMenu(
-                            expanded = languageDropdownExpanded,
-                            onDismissRequest = { languageDropdownExpanded = false }
-                        ) {
-                            languageOptions.forEach { lang ->
-                                DropdownMenuItem(
-                                    text = { Text(lang.name) },
-                                    onClick = {
-                                        selectedLanguage = lang
-                                        languageDropdownExpanded = false
-                                    }
-                                )
+
+                        Spacer(modifier = Modifier.width(8.dp))
+
+                        // State dropdown
+                        Box {
+                            TextButton(onClick = { stateDropdownExpanded = true }) {
+                                Text(selectedState)
+                            }
+                            DropdownMenu(
+                                expanded = stateDropdownExpanded,
+                                onDismissRequest = { stateDropdownExpanded = false }
+                            ) {
+                                states.forEach { state ->
+                                    DropdownMenuItem(
+                                        text = { Text(state) },
+                                        onClick = {
+                                            selectedState = state
+                                            stateDropdownExpanded = false
+                                        }
+                                    )
+                                }
                             }
                         }
                     }
@@ -65,15 +96,15 @@ fun Ai4BharatApp(dao: SchemeDao?) {
     ) { paddingValues ->
         Column(modifier = Modifier.padding(paddingValues)) {
             when (selectedTab) {
-                0 -> Text(
-                    text = when (selectedLanguage) {
-                        Language.EN -> "Home Screen"
-                        Language.HI -> "होम स्क्रीन"
-                        Language.ML -> "ഹോം സ്ക്രീൻ"
-                        Language.TA -> "முகப்பு திரை"
-                    },
-                    modifier = Modifier.padding(16.dp)
-                )
+                0 -> {
+                    // 🔹 Home Screen
+                    val homeViewModel = remember { HomeViewModel() }
+                    HomeScreen(
+                        viewModel = homeViewModel,
+                        selectedLanguage = selectedLanguage,
+                        selectedState = selectedState
+                    )
+                }
 
                 1 -> SchemeScreen(dao = dao, language = selectedLanguage)
                 2 -> {
@@ -85,25 +116,17 @@ fun Ai4BharatApp(dao: SchemeDao?) {
                 }
 
                 3 -> TranslateScreen()
-//                Text(
+
+                4 -> EmergencyScreen(language = selectedLanguage)
+//                    Text(
 //                    text = when (selectedLanguage) {
-//                        Language.EN -> "Categories Screen"
-//                        Language.HI -> "श्रेणियाँ स्क्रीन"
-//                        Language.ML -> "വിഭാഗങ്ങൾ സ്ക്രീൻ"
-//                        Language.TA -> "வகைகள் திரை"
+//                        Language.EN -> "Profile Screen"
+//                        Language.HI -> "प्रोफ़ाइल स्क्रीन"
+//                        Language.ML -> "പ്രൊഫൈൽ സ്ക്രീൻ"
+//                        Language.TA -> "சுயவிவர திரை"
 //                    },
 //                    modifier = Modifier.padding(16.dp)
 //                )
-
-                4 -> Text(
-                    text = when (selectedLanguage) {
-                        Language.EN -> "Profile Screen"
-                        Language.HI -> "प्रोफ़ाइल स्क्रीन"
-                        Language.ML -> "പ്രൊഫൈൽ സ്ക്രീൻ"
-                        Language.TA -> "சுயவிவர திரை"
-                    },
-                    modifier = Modifier.padding(16.dp)
-                )
             }
         }
     }

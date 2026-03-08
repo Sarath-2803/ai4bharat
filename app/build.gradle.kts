@@ -67,4 +67,7 @@ dependencies {
     implementation("androidx.room:room-ktx:2.6.1")
     implementation("androidx.compose.material:material-icons-extended")
     implementation("com.google.mlkit:translate:17.0.2")
+    implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation("com.amazonaws:aws-android-sdk-core:2.73.0")
+    implementation("com.amazonaws:aws-android-sdk-translate:2.73.0")
 }
